@@ -80,7 +80,7 @@ projeto_vue_operadoras/
 ---
 
 ## Autora
-Projeto desenvolvido por **Ingride Souza** para teste de nivelamento da vaga na **Intuitive Care**. 
+Projeto desenvolvido por **Ingride Souza**.
 
 Com este teste, busquei entregar soluções organizadas, bem documentadas e com foco em boas práticas de código e estrutura de dados. :)
 
