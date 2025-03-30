@@ -44,11 +44,9 @@ class PDFProcessor:
             "HCO", "HSO", "REF", "PAC", "DUT", "SUBGRUPO", "GRUPO", "CAPÍTULO"
         ]
         
-        # Limpeza
         df = df[~df['PROCEDIMENTO'].str.contains('PROCEDIMENTO', na=False)]
         df = df.drop_duplicates()
         
-        # Substituições
         replacements = {
             "OD": "Odontológico", "AMB": "Ambulatorial",
             "HCO": "Hospitalar com Ocupação", "HSO": "Hospitalar sem Ocupação",
@@ -56,7 +54,6 @@ class PDFProcessor:
             "DUT": "Diretriz de Utilização"
         }
         
-        # Remover quebras de linha e substituir abreviações
         df = df.replace(replacements)
         df = df.replace(r'\n', ' ', regex=True)
         df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
@@ -71,7 +68,6 @@ def main():
         tables = processor.extract_tables()
         df_final = processor.process_data(tables)
         
-        # Exportação
         csv_filename = "rol_de_procedimentos.csv"
         df_final.to_csv(csv_filename, index=False, encoding="utf-8", quoting=csv.QUOTE_ALL)
         

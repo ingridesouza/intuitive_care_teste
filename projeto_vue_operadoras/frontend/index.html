@@ -1,0 +1,46 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Busca de Operadoras - Intuitive Care</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <div id="app">
+    <h2>Busca de Operadoras da ANS</h2>
+    <input v-model="busca" placeholder="Digite parte do nome da operadora" />
+    <button @click="buscar">Buscar</button>
+
+    <ul v-if="resultados.length">
+      <li v-for="op in resultados" :key="op.REGISTRO_ANS">
+        <strong>{{ op.RAZAO_SOCIAL }}</strong> ({{ op.CNPJ }}) - {{ op.UF }}
+      </li>
+    </ul>
+
+    <p v-else-if="buscou">Nenhum resultado encontrado.</p>
+  </div>
+
+  <script>
+    const { createApp } = Vue
+
+    createApp({
+      data() {
+        return {
+          busca: '',
+          resultados: [],
+          buscou: false
+        }
+      },
+      methods: {
+        async buscar() {
+          if (!this.busca.trim()) return
+          const response = await fetch(`http://localhost:8000/buscar?termo=${this.busca}`)
+          this.resultados = await response.json()
+          this.buscou = true
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>

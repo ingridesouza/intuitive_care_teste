@@ -13,16 +13,13 @@ def main():
     baixa esses dois arquivos e compacta em um único arquivo ZIP.
     """
 
-    # URL da página
     base_url = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos"
 
-    # Faz a requisição ao site
     response = requests.get(base_url)
     if response.status_code != 200:
         print(f"Não foi possível acessar {base_url}. status: {response.status_code}")
         return
 
-    # Faz o parsing do HTML
     soup = BeautifulSoup(response.text, "html.parser")
 
     links_encontrados = []
@@ -30,7 +27,6 @@ def main():
         texto_link = link.get_text(strip=True)
         href_link = link["href"]
 
-        # Localiza links que terminem em .pdf
         if href_link.lower().endswith(".pdf"):
             links_encontrados.append((texto_link, href_link))
 
@@ -38,7 +34,6 @@ def main():
         print("Nenhum link(PDF) foi encontrado na página.")
         return
 
-    # Filtro por aqueles que mencionem Anexo I e Anexo II utilizando expressões regulares
     pdf_links = {}
 
     for texto, href in links_encontrados:
@@ -59,7 +54,6 @@ def main():
     download_dir = "downloads_ans"
     os.makedirs(download_dir, exist_ok=True)
 
-    # Baixa os pdfs
     for anexo_chave, anexo_url in pdf_links.items():
         nome_arquivo = f"{anexo_chave}.pdf"
         caminho_arquivo = os.path.join(download_dir, nome_arquivo)
@@ -73,7 +67,6 @@ def main():
         else:
             print(f"Falha ao baixar {nome_arquivo}. status: {resp.status_code}")
 
-    # Compacta os arquivos em um ZIP
     zip_filename = "anexos.zip"
     zip_path = os.path.join(download_dir, zip_filename)
 
